@@ -1,0 +1,12 @@
+{
+  "name": "ddos-tool",
+  "version": "1.0.0",
+  "description": "A heavyweight DDoS tool",
+  "main": "src/index.html",
+  "scripts": {
+    "deploy": "wrangler publish"
+  },
+  "devDependencies": {
+    "wrangler": "^4.46.0"
+  }
+}
