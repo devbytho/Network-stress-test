@@ -1,5 +1,16 @@
 {
   "name": "ddos-tool",
   "compatibility_date": "2025-11-10",
-  "main": "src/index.html"
+  "main": "src/index.html",
+  "build": {
+    "commands": [],
+    "upload": {
+      "format": "modules",
+      "main": "src/index.html",
+      "dir": "src"
+    }
+  },
+  "assets": {
+    "directory": "src"
+  }
 }
